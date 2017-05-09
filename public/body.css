@@ -1,0 +1,8 @@
+body {
+  background-color: pink;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+h1, p { margin: 0; }

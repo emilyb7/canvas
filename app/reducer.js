@@ -4,11 +4,12 @@ const defaultState = {
   lastX: null,
   lastY: null,
   strokes: [],
+  color: '#000',
 }
 
-const newStroke = ({ lastX, lastY, }, nextX, nextY) => {
+const newStroke = ({ lastX, lastY, }, nextX, nextY, color) => {
   if (!lastX || !lastY) return [];
-  return { fromX: lastX, fromY: lastY, toX: nextX, toY: nextY, };
+  return { fromX: lastX, fromY: lastY, toX: nextX, toY: nextY, color: color, };
 };
 
 export default (state = defaultState, action) => {
@@ -22,7 +23,12 @@ export default (state = defaultState, action) => {
         ...state,
         lastX: action.offsetX,
         lastY: action.offsetY,
-        strokes: state.strokes.concat(newStroke(state, action.offsetX, action.offsetY))
+        strokes: state.strokes.concat(newStroke(state, action.offsetX, action.offsetY, action.color))
+      }
+    case 'PICK_COLOR':
+      return {
+        ...state,
+        color: action.color,
       }
     default:
       return state;
