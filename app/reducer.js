@@ -18,6 +18,7 @@ export default (state = defaultState, action) => {
         currentStroke: { fromX: action.startX, fromY: action.startY, color: state.color, },
       };
     case 'SET_DRAWING_FALSE':
+      if (state.isDrawing === false) return state;
       return {
         ...state,
         isDrawing: false,
@@ -26,7 +27,6 @@ export default (state = defaultState, action) => {
         currentPath: [],
       };
     case 'ADD_TO_PATH':
-    console.log("adding to path", action);
       return {
         ...state,
         currentPath: state.currentPath.concat([ action.coords, ]),
@@ -35,6 +35,11 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         color: action.color,
+      }
+    case 'CLEAR_CANVAS':
+      return {
+        ...state,
+        strokes: [],
       }
     default:
       return state;

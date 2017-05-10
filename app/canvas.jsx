@@ -9,9 +9,10 @@ class Canvas extends React.Component {
   }
 
   updateCanvas() {
-    const lastX = 0;
-    const lastY = 0;
+    console.log("updating");
     const ctx = this.refs.canvas.getContext('2d');
+    ctx.clearRect(0, 0, window.innerWidth, 500);
+    if(!this.props.strokes.length && !this.props.currentPath.length) return;
     ctx.lineWidth = 10;
     ctx.LineJoin = 'round';
     ctx.lineCap = 'round';
@@ -37,6 +38,12 @@ class Canvas extends React.Component {
       this.delayed();
     }
 
+    const clearCanvas = () => {
+      this.props.clearCanvas();
+      const ctx = this.refs.canvas.getContext('2d');
+      ctx.clearRect(0, 0, window.innerWidth, 500);
+    }
+
     const canvasStyle = {
       height: '500px',
       width: window.innerWidth,
@@ -46,17 +53,43 @@ class Canvas extends React.Component {
       backgroundColor: 'rgb(250, 250, 250)',
     };
 
+    const clearContainerStyle = {
+      height: '50px',
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+    }
+
+    const buttonStyle = {
+      height: '50px',
+      width: '150px',
+      backgroundColor: '#00d49b',
+      color: '#fff',
+      outline: 'none',
+      cursor: 'pointer',
+      fontSize: '18px',
+      alignSelf: 'center',
+      borderColor: 'turquoise',
+      borderStyle: 'solid',
+    }
+
     return (
-      <canvas
-        ref="canvas"
-        width={ window.innerWidth }
-        height={ 500 }
-        style={ canvasStyle }
-        onMouseMove={ draw }
-        onMouseDown={ this.props.setDrawingTrue }
-        onMouseUp={ this.props.setDrawingFalse }
-        onMouseLeave={ this.props.setDrawingFalse }
-      ></canvas>
+      <div>
+        <canvas
+          ref="canvas"
+          width={ window.innerWidth }
+          height={ 500 }
+          style={ canvasStyle }
+          onMouseMove={ draw }
+          onMouseDown={ this.props.setDrawingTrue }
+          onMouseUp={ this.props.setDrawingFalse }
+          onMouseLeave={ this.props.setDrawingFalse }
+          ></canvas>
+        <div style={ clearContainerStyle }>
+          <button style={ buttonStyle } onClick={ clearCanvas }>Clear</button>
+        </div>
+      </div>
     );
   }
 }

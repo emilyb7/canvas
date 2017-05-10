@@ -22,6 +22,10 @@ const App = props => {
 
   const titleStyle = {
     height: '50px',
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   }
 
   return (
@@ -39,8 +43,9 @@ const App = props => {
           addToPath={ props.addToPath }
           currentStroke={ props.currentStroke }
           currentPath={ props.currentPath }
+          clearCanvas={ props.clearCanvas }
         />
-      <ColorPalette pickColor={ props.pickColor } color={ props.color }/>
+        <ColorPalette pickColor={ props.pickColor } color={ props.color }/>
       </div>
     </div>
   )
@@ -71,6 +76,9 @@ const actions = {
   addToPath: (coords) => ({
     type: 'ADD_TO_PATH',
     coords: coords,
+  }),
+  clearCanvas: () => ({
+    type: 'CLEAR_CANVAS',
   }),
 };
 
