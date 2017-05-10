@@ -33,10 +33,12 @@ const App = props => {
         <Canvas
           setDrawingTrue={ props.setDrawingTrue }
           setDrawingFalse={ props.setDrawingFalse }
-          newStroke={ props.newStroke }
           isDrawing={ props.isDrawing }
           strokes={ props.strokes }
           color={ props.color }
+          addToPath={ props.addToPath }
+          currentStroke={ props.currentStroke }
+          currentPath={ props.currentPath }
         />
       <ColorPalette pickColor={ props.pickColor } color={ props.color }/>
       </div>
@@ -49,24 +51,26 @@ const mapStateToProps = state => ({
   isDrawing: state.isDrawing,
   strokes: state.strokes,
   color: state.color,
+  currentStroke: state.currentStroke,
+  currentPath: state.currentPath,
 });
 
 const actions = {
-  setDrawingTrue: () => ({
+  setDrawingTrue: (event) => ({
     type: 'SET_DRAWING_TRUE',
+    startX: event.nativeEvent.offsetX,
+    startY: event.nativeEvent.offsetY,
   }),
   setDrawingFalse: () => ({
     type: 'SET_DRAWING_FALSE',
   }),
-  newStroke: (offsetX, offsetY, color) => ({
-    type: 'NEW_STROKE',
-    offsetX: offsetX,
-    offsetY: offsetY,
-    color: color,
-  }),
   pickColor: (color) => ({
     type: 'PICK_COLOR',
     color: color,
+  }),
+  addToPath: (coords) => ({
+    type: 'ADD_TO_PATH',
+    coords: coords,
   }),
 };
 

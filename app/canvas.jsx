@@ -12,14 +12,19 @@ class Canvas extends React.Component {
     const lastX = 0;
     const lastY = 0;
     const ctx = this.refs.canvas.getContext('2d');
-    ctx.strokeStyle = this.props.color;
-    ctx.lineWidth = 7;
+    ctx.lineWidth = 10;
     ctx.LineJoin = 'round';
-    this.props.strokes.slice(1).forEach(stroke => {
+    ctx.lineCap = 'round';
+    ctx.miterLimit = 2;
+    const allStrokes = this.props.strokes
+      .concat([ { ...this.props.currentStroke, path: this.props.currentPath}, ]);
+    allStrokes.forEach(stroke => {
       ctx.beginPath();
       ctx.strokeStyle = stroke.color;
       ctx.moveTo(stroke.fromX, stroke.fromY);
-      ctx.lineTo(stroke.toX, stroke.toY);
+      stroke.path.forEach(({ x, y, }) => {
+        ctx.lineTo(x, y);
+      });
       ctx.stroke();
     });
   }
@@ -28,7 +33,7 @@ class Canvas extends React.Component {
 
     const draw = ({ nativeEvent, }) => {
       if (!this.props.isDrawing) return;
-      this.props.newStroke(nativeEvent.offsetX, nativeEvent.offsetY, this.props.color);
+      this.props.addToPath({ x: nativeEvent.offsetX, y: nativeEvent.offsetY, });
       this.delayed();
     }
 
