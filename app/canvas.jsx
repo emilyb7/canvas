@@ -3,16 +3,21 @@ import debounce from 'lodash.debounce';
 
 class Canvas extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.updateCanvas = this.updateCanvas.bind(this);
+    this.clearCanvas = this.clearCanvas.bind(this);
+  }
+
   componentDidMount() {
     this.updateCanvas();
     this.delayed = debounce(this.updateCanvas, 10, { maxWait: 20, });
   }
 
   updateCanvas() {
-    console.log("updating");
     const ctx = this.refs.canvas.getContext('2d');
     ctx.clearRect(0, 0, window.innerWidth, 500);
-    if(!this.props.strokes.length && !this.props.currentPath.length) return;
+    if (!this.props.strokes.length && !this.props.currentPath.length) return;
     ctx.lineWidth = 10;
     ctx.LineJoin = 'round';
     ctx.lineCap = 'round';
@@ -30,18 +35,17 @@ class Canvas extends React.Component {
     });
   }
 
-  render() {
+  clearCanvas() {
+    this.props.clearCanvas();
+    const ctx = this.refs.canvas.getContext('2d');
+    ctx.clearRect(0, 0, window.innerWidth, 500);
+  }
 
+  render() {
     const draw = ({ nativeEvent, }) => {
       if (!this.props.isDrawing) return;
       this.props.addToPath({ x: nativeEvent.offsetX, y: nativeEvent.offsetY, });
       this.delayed();
-    }
-
-    const clearCanvas = () => {
-      this.props.clearCanvas();
-      const ctx = this.refs.canvas.getContext('2d');
-      ctx.clearRect(0, 0, window.innerWidth, 500);
     }
 
     const canvasStyle = {
@@ -85,9 +89,9 @@ class Canvas extends React.Component {
           onMouseDown={ this.props.setDrawingTrue }
           onMouseUp={ this.props.setDrawingFalse }
           onMouseLeave={ this.props.setDrawingFalse }
-          ></canvas>
+        ></canvas>
         <div style={ clearContainerStyle }>
-          <button style={ buttonStyle } onClick={ clearCanvas }>Clear</button>
+          <button style={ buttonStyle } onClick={ this.clearCanvas }>Clear</button>
         </div>
       </div>
     );
