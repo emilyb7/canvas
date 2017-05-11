@@ -15,6 +15,7 @@ class Canvas extends React.Component {
   }
 
   updateCanvas() {
+    console.log("hi");
     const ctx = this.refs.canvas.getContext('2d');
     ctx.clearRect(0, 0, window.innerWidth, 500);
     if (!this.props.strokes.length && !this.props.currentPath.length) return;
